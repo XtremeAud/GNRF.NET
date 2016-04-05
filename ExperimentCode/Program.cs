@@ -10,6 +10,9 @@ namespace ExperimentCode
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("GMN Switch is starting...");
+            EthInterface.StartingRX();
+            Console.WriteLine(">> RX is running...");
 
         }
     }

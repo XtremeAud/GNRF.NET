@@ -68,7 +68,7 @@ namespace ExperimentCode
                                     PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
                                     1000))                                  // read timeout
             {
-                Console.WriteLine("Listening on " + selectedDevice.Description + "...");
+                Console.WriteLine(">> Listening on " + selectedDevice.Description + "...");
 
                 // start the capture
                 communicator.ReceivePackets(0, PacketHandler);
