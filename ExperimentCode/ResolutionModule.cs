@@ -12,6 +12,14 @@ namespace ExperimentCode
         public string DstName;
         public string Values;
         public string Actions;
+
+        public NamespaceEntity(string SrcName, string DstName, string Values, string Actions)
+        {
+            this.SrcName = SrcName;
+            this.DstName = DstName;
+            this.Values = Values;
+            this.Actions = Actions;
+        }
     }
 
     public class Namespace
@@ -45,6 +53,11 @@ namespace ExperimentCode
             }
         }
 
+        public static void InsertNamespaceEntity(string NSName, string SrcName, string DstName, string Values, string Actions)
+        {
+            Namespaces.NamespaceList[FindNS(NSName)].EntityList.Add(new NamespaceEntity(SrcName, DstName, Values, Actions));
+        }
+
         public static int FindNS(string NSName)
         {
             int Index = -1;
@@ -57,5 +70,32 @@ namespace ExperimentCode
             }
             return Index;
         }
+
+        public static void ListNamespace()
+        {
+            string Line = "";
+            Console.WriteLine("Listing All the Namespaces:Index | Name | Input Filter | Default Actions");
+            for (int n = 0; n < Namespaces.NamespaceList.Count; n++)
+            {
+                Console.WriteLine("_____________________________________________________________");
+                Line = n.ToString() + " | " + Namespaces.NamespaceList[n].NSName + " | " + Namespaces.NamespaceList[n].InputFilter +
+                    " | " + Namespaces.NamespaceList[n].DefaultActions + " |";
+                Console.WriteLine(Line);
+            }
+        }
+
+        public static void ListNamespaceEntities(int IndexofNamespace)
+        {
+            string Line = "";
+            Console.WriteLine("Listing All the Entities:Index | SrcName | DstName | Values | Actions");
+            for (int n = 0; n < Namespaces.NamespaceList[IndexofNamespace].EntityList.Count; n++)
+            {
+                Console.WriteLine("_____________________________________________________________");
+                Line = n.ToString() + " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].SrcName + " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].DstName +
+                    " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].Values + " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].Actions + " |";
+                Console.WriteLine(Line);
+            }
+        }
+    }
     }
 }
