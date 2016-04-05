@@ -14,13 +14,24 @@ namespace ExperimentCode
         string Actions;
     }
 
-    class Namespace
+    public class Namespace
     {
+        string NSName;
         string InputFilter;
         List<NamespaceEntity> EntityList = new List<NamespaceEntity>();
         string DefaultActions;
     }
+
+    public static class Namespaces
+    {
+        public static List<Namespace> NamespaceList = new List<Namespace>();
+    }
+
     class ResolutionModule
     {
+        public static void CreatNS()
+        {
+            ;
+        }
     }
 }
