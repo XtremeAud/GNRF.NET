@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExperimentCode
 {
@@ -95,6 +92,16 @@ namespace ExperimentCode
                     " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].Values + " | " + Namespaces.NamespaceList[IndexofNamespace].EntityList[n].Actions + " |";
                 Console.WriteLine(Line);
             }
+        }
+
+        public static void DeleteNamespace(int IndexofNamespace)
+        {
+            Namespaces.NamespaceList.RemoveAt(IndexofNamespace);
+        }
+
+        public static void DeleteEntity(int IndexofNamespace, int IndexofEntity)
+        {
+            Namespaces.NamespaceList[IndexofNamespace].EntityList.RemoveAt(IndexofEntity);
         }
     }
 }
