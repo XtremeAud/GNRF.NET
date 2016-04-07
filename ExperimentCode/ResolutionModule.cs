@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading;
 
 namespace ExperimentCode
 {
@@ -46,6 +48,51 @@ namespace ExperimentCode
 
     class ResolutionModule
     {
+        private static Thread ResolutionEng;
+
+        //Start resolving 开始解析线程
+        public static void StartResolutin()
+        {
+            ResolutionEng = new Thread(tResolutionEng);
+            ResolutionEng.Start();
+        }
+
+        //public static void SuspendResolution()
+        //{
+        //    if (ResolutionEng != null)
+        //    {
+        //        ResolutionEng.Suspend();
+        //    }
+        //}
+
+        private static void tResolutionEng()
+        {
+            while (true)
+            {
+                if (InComingPacketQueue.InComing.Count > 0)
+                {
+                    InternalPacket iPkt = new InternalPacket();
+                    iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
+                    //TODO:
+                    //Get Names
+                    //Look up Tables
+                    //Intereption
+                    //ReShape the format
+                    //Push to Outcoming Queue
+                }
+            }
+        }
+
+        private static void GetNames(ref InternalPacket iPkt)
+        {
+            string Head = "";
+            string RawPacket = iPkt.Packet.Ethernet.Payload.Decode(System.Text.Encoding.ASCII);
+        }
+
+        private static void TableLookUp(ref InternalPacket iPkt)
+        {
+
+        }
 
         //New a table of Namespace 建立新的Namespace表
         public static void CreatNS(string NSName, string InputFilter, string DefaultAcitons)
