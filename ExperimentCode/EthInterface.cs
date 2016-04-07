@@ -12,7 +12,7 @@ namespace ExperimentCode
 
     static class GlobalSetting
     {
-        public static int InterfaceID = 1;
+        public static int InterfaceID = 0;
     }
 
     class EthInterface
@@ -79,6 +79,7 @@ namespace ExperimentCode
         {
             //Console.WriteLine("From:" + packet.Ethernet.Source.ToString() + " length:" + packet.Length + " Msg: " + packet.Ethernet.Payload.Decode(System.Text.Encoding.UTF8));
             InComingPacketQueue.InComing.Enqueue(packet);
+            //Console.WriteLine(packet.Length);
         }
     }
 }

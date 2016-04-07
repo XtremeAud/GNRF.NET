@@ -47,7 +47,7 @@ namespace ExperimentCode
 
         private static void EthForwarder(InternalPacket iPkt)
         {
-
+            ;
         }
     }
 }

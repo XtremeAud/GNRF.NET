@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace ExperimentCode
 {
+    //The Record in the table of Namespace 
+    //Namespace中的Records
     public class NamespaceEntity
     {
         public string SrcName;
@@ -19,6 +21,8 @@ namespace ExperimentCode
         }
     }
 
+    //Namespace表
+    //The table of namespace
     public class Namespace
     {
         public string NSName;
@@ -42,6 +46,8 @@ namespace ExperimentCode
 
     class ResolutionModule
     {
+
+        //New a table of Namespace 建立新的Namespace表
         public static void CreatNS(string NSName, string InputFilter, string DefaultAcitons)
         {
             if (FindNS(NSName) != -1)
@@ -50,11 +56,13 @@ namespace ExperimentCode
             }
         }
 
+        //Insert an records to the Namespace 插入新的解析记录项
         public static void InsertNamespaceEntity(string NSName, string SrcName, string DstName, string Values, string Actions)
         {
             Namespaces.NamespaceList[FindNS(NSName)].EntityList.Add(new NamespaceEntity(SrcName, DstName, Values, Actions));
         }
 
+        //Find a namespace and Return its index 查找一个namespace并返回它的index
         public static int FindNS(string NSName)
         {
             int Index = -1;
@@ -68,6 +76,7 @@ namespace ExperimentCode
             return Index;
         }
 
+        //List all Namespace tables 列出当前所有的Namespace
         public static void ListNamespace()
         {
             string Line = "";
@@ -81,6 +90,7 @@ namespace ExperimentCode
             }
         }
 
+        //List all records in a namespace table 列出一个namespace表中的所有解析记录项
         public static void ListNamespaceEntities(int IndexofNamespace)
         {
             string Line = "";
@@ -94,11 +104,13 @@ namespace ExperimentCode
             }
         }
 
-        public static void DeleteNamespace(int IndexofNamespace)
+        //Drop a namespace table 删除一个Namespace表
+        public static void DropNamespace(int IndexofNamespace)
         {
             Namespaces.NamespaceList.RemoveAt(IndexofNamespace);
         }
 
+        //Delete a record in the namespace table 删除一条解析记录
         public static void DeleteEntity(int IndexofNamespace, int IndexofEntity)
         {
             Namespaces.NamespaceList[IndexofNamespace].EntityList.RemoveAt(IndexofEntity);
