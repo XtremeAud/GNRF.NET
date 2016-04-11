@@ -2,10 +2,7 @@
 using PcapDotNet.Packets;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ExperimentCode
 {
@@ -15,6 +12,7 @@ namespace ExperimentCode
         public static int InterfaceID = 0;
     }
 
+    //接受Ethernet报文并加入到Incoming队列中
     class EthInterface
     {
         public static void StartingRX()
@@ -78,7 +76,9 @@ namespace ExperimentCode
         private static void PacketHandler(Packet packet)
         {
             //Console.WriteLine("From:" + packet.Ethernet.Source.ToString() + " length:" + packet.Length + " Msg: " + packet.Ethernet.Payload.Decode(System.Text.Encoding.UTF8));
-            InComingPacketQueue.InComing.Enqueue(packet);
+            Console.WriteLine(packet.Ethernet.Payload.ToHexadecimalString());
+
+            //InComingPacketQueue.InComing.Enqueue(packet);
             //Console.WriteLine(packet.Length);
         }
     }

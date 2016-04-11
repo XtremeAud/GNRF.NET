@@ -13,6 +13,8 @@ namespace ExperimentCode
             Console.WriteLine("GMN Switch is starting...");
             EthInterface.StartingRX();
             Console.WriteLine(">> RX is running...");
+            ResolutionModule.StartResolutin();
+            Console.WriteLine(">> Resolution module is running...");
             ForwardingEngine.StartForwardingEngine();
             Console.WriteLine(">> TX is running...");
         }

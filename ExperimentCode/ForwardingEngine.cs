@@ -26,12 +26,12 @@ namespace ExperimentCode
                     InternalPacket iPkt = OutGoingPacketQueue.OutGoing.Dequeue();
                     switch (iPkt.Protocol)
                     {
-                        case "Eth":
+                        case InternalPacket.Protocols.TCP:
                             {
                                 EthForwarder(iPkt);
                                 break;
                             }
-                        case "TCP":
+                        case InternalPacket.Protocols.UDP:
                             {
                                 ;
                                 break;

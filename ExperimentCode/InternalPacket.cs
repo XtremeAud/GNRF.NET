@@ -9,9 +9,14 @@ namespace ExperimentCode
 {
     public class InternalPacket
     {
+        public enum Protocols
+        {
+            TCP, UDP, NDN, NA
+        }
+
         public string SrcName;
         public string DstName;
-        public string Protocol;
+        public Protocols Protocol;
         public Packet Packet;
         public string Actions;
     }

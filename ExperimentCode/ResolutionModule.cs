@@ -74,6 +74,7 @@ namespace ExperimentCode
                     InternalPacket iPkt = new InternalPacket();
                     iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
                     //TODO:
+                    //Get Protocols
                     //Get Names
                     //Look up Tables
                     //Intereption
@@ -81,6 +82,30 @@ namespace ExperimentCode
                     //Push to Outcoming Queue
                 }
             }
+        }
+
+        private static void GetProtocol(ref InternalPacket iPkt)
+        {
+            string HexPayload = iPkt.Packet.Ethernet.Payload.ToHexadecimalString();
+            string ProtocolTag = HexPayload.Substring(18, 2);
+            if (ProtocolTag == "06")
+            {
+                iPkt.Protocol = InternalPacket.Protocols.TCP;
+            }
+            else if (ProtocolTag == "11")
+            {
+                iPkt.Protocol = InternalPacket.Protocols.UDP;
+            }
+            else if (ProtocolTag == "CX")
+            {
+                iPkt.Protocol = InternalPacket.Protocols.NDN;
+            }
+
+            else
+            {
+                iPkt.Protocol = InternalPacket.Protocols.NA;
+            }
+
         }
 
         private static void GetNames(ref InternalPacket iPkt)
