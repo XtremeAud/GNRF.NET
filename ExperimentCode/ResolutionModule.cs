@@ -71,6 +71,7 @@ namespace ExperimentCode
             {
                 if (InComingPacketQueue.InComing.Count > 0)
                 {
+
                     InternalPacket iPkt = new InternalPacket();
                     iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
                     //TODO:
