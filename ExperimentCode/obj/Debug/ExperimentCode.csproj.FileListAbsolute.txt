@@ -34,3 +34,6 @@ C:\Users\Asa\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\bin\Debug\PcapDotNet.Core.
 C:\Users\Asa\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\bin\Debug\PcapDotNet.Core.Extensions.xml
 C:\Users\Asa\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\bin\Debug\PcapDotNet.Packets.pdb
 C:\Users\Asa\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\bin\Debug\PcapDotNet.Packets.xml
+E:\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\bin\Debug\ExperimentCode.exe.config
+E:\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\obj\Debug\ExperimentCode.exe
+E:\Dropbox\GMN_Paper\GMN.NET\ExperimentCode\obj\Debug\ExperimentCode.pdb

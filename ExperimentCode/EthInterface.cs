@@ -7,9 +7,10 @@ using System.Threading;
 namespace ExperimentCode
 {
 
-    static class GlobalSetting
+    static class GlobalSettings
     {
-        public static int InterfaceID = 0;
+        public static int InterfaceID_TX = 0;
+        public static int InterfaceID_RX = 0;
     }
 
     //接受Ethernet报文并加入到Incoming队列中
@@ -57,7 +58,7 @@ namespace ExperimentCode
 
             // Take the selected adapter
             //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
-            PacketDevice selectedDevice = allDevices[GlobalSetting.InterfaceID];
+            PacketDevice selectedDevice = allDevices[GlobalSetting.InterfaceID_RX];
 
             // Open the device
             using (PacketCommunicator communicator =
