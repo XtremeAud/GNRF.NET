@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapter\IPAgent.cs" />
+    <Compile Include="Adapter\NDNAgent.cs" />
     <Compile Include="EthInterface.cs" />
     <Compile Include="FormatAdapter.cs" />
     <Compile Include="ForwardingEngine.cs" />

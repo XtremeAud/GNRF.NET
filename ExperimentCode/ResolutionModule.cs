@@ -57,14 +57,6 @@ namespace ExperimentCode
             ResolutionEng.Start();
         }
 
-        //public static void SuspendResolution()
-        //{
-        //    if (ResolutionEng != null)
-        //    {
-        //        ResolutionEng.Suspend();
-        //    }
-        //}
-
         private static void tResolutionEng()
         {
             while (true)
