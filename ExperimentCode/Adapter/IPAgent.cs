@@ -8,9 +8,15 @@ using System.Threading.Tasks;
 
 namespace ExperimentCode.Adapter
 {
+    static class IPAgentSettings
+    {
+        public static string CacheDirectory = ".\\Cache\\";
+    }
+
     public class IPAgent
     {
-        public static void HttpGetFileAndPushto(string URL)
+
+        public static void HttpGetFile(string URL)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             WebResponse response = request.GetResponse();
@@ -19,7 +25,7 @@ namespace ExperimentCode.Adapter
             {
                 //Value = SaveBinaryFile(response, FileName); 
                 byte[] buffer = new byte[1024];
-                Stream outStream = System.IO.File.Create(FileName);
+                Stream outStream = System.IO.File.Create(URL.Substring(URL.LastIndexOf("/")+1));
                 Stream inStream = response.GetResponseStream();
                 int l;
                 do
@@ -33,5 +39,7 @@ namespace ExperimentCode.Adapter
                 inStream.Close();
             }
         }
+
+
     }
 }
