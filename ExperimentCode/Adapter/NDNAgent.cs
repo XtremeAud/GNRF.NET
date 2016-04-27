@@ -11,7 +11,7 @@ namespace ExperimentCode.Adapter
         public static void InterestPktInterpreter(InternalPacket iPkt)
         {
             //When a interest pkt comes in, firstly, get its name (the name of the request object)
-            string T_Name = iPkt.
+            //string T_Name = iPkt.
         }
     }
 }

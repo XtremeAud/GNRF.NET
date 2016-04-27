@@ -34,32 +34,33 @@ namespace ExperimentCode
                 return;
             }
 
-            //// Print the list
-            //for (int i = 0; i != allDevices.Count; ++i)
-            //{
-            //    LivePacketDevice device = allDevices[i];
-            //    Console.Write((i + 1) + ". " + device.Name);
-            //    if (device.Description != null)
-            //        Console.WriteLine(" (" + device.Description + ")");
-            //    else
-            //        Console.WriteLine(" (No description available)");
-            //}
+            // Print the list
+            Console.WriteLine(">> Choose the RX Interface please");
+            for (int i = 0; i != allDevices.Count; ++i)
+            {
+                LivePacketDevice device = allDevices[i];
+                Console.Write((i + 1) + ". " + device.Name);
+                if (device.Description != null)
+                    Console.WriteLine(" (" + device.Description + ")");
+                else
+                    Console.WriteLine(" (No description available)");
+            }
 
-            //int deviceIndex = 0;
-            //do
-            //{
-            //    Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "):");
-            //    string deviceIndexString = Console.ReadLine();
-            //    if (!int.TryParse(deviceIndexString, out deviceIndex) ||
-            //        deviceIndex < 1 || deviceIndex > allDevices.Count)
-            //    {
-            //        deviceIndex = 0;
-            //    }
-            //} while (deviceIndex == 0);
+            GlobalSettings.InterfaceID_RX = 0;
+            do
+            {
+                Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "):");
+                string deviceIndexString = Console.ReadLine();
+                if (!int.TryParse(deviceIndexString, out GlobalSettings.InterfaceID_RX) ||
+                    GlobalSettings.InterfaceID_RX < 1 || GlobalSettings.InterfaceID_RX > allDevices.Count)
+                {
+                    GlobalSettings.InterfaceID_RX = 0;
+                }
+            } while (GlobalSettings.InterfaceID_RX == 0);
 
             // Take the selected adapter
             //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
-            PacketDevice selectedDevice = allDevices[GlobalSettings.InterfaceID_RX];
+            PacketDevice selectedDevice = allDevices[GlobalSettings.InterfaceID_RX - 1];
 
             // Open the device
             using (PacketCommunicator communicator =
