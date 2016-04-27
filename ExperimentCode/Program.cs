@@ -8,10 +8,10 @@ namespace ExperimentCode
 {
     public static class ExperimentSetting
     {
-        public static int PayloadLength = 10;
-        
-        //Switch_0 是接收者
-        public static string DstMACAdd = 
+        //public static int PayloadLength = 10;
+
+        public static string DstMACAdd = "00:50:56:32:1B:D0";
+        //public static string SrcMACAdd = "00:50:56:32:1B:D0";
     }
     class Program
     {
@@ -24,18 +24,28 @@ namespace ExperimentCode
             {
                 ExperimentClient.BlueTooth_Zigbee_Simulator();
             }
-            if (Input == "R")
+            else if (Input == "R")
             {
-
+                ExperimentClient.EthReceiver();
             }
-
-            EthInterface.StartingRX();
-            Console.WriteLine("GMN Switch is starting...");
-            Console.WriteLine(">> RX is running...");
-            ResolutionModule.StartResolutin();
-            Console.WriteLine(">> Resolution module is running...");
-            ForwardingEngine.StartForwardingEngine();
-            Console.WriteLine(">> TX is running...");
+            else if (Input == "H")
+            {
+                ExperimentClient.HTTPServer();
+            }
+            else if (Input == "C")
+            {
+                ExperimentClient.CCNx();
+            }
+            else
+            {
+                EthInterface.StartingRX();
+                Console.WriteLine("GMN Switch is starting...");
+                Console.WriteLine(">> RX is running...");
+                ResolutionModule.StartResolutin();
+                Console.WriteLine(">> Resolution module is running...");
+                ForwardingEngine.StartForwardingEngine();
+                Console.WriteLine(">> TX is running...");
+            }
         }
     }
 }
