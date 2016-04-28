@@ -146,25 +146,6 @@ namespace ExperimentCode
             Thread tStat = new Thread(ReFresher);
             tStat.Start();
 
-            //// Open the device
-            //using (PacketCommunicator communicator =
-            //    selectedDevice.Open(65536,                                  // portion of the packet to capture
-            //                                                                // 65536 guarantees that the whole packet will be captured on all the link layers
-            //                        PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-            //                        10))                                  // read timeout
-            //{
-            //    Console.WriteLine("Listening on " + selectedDevice.Description + "...");
-            //    if (Input == "E")
-            //    {
-            //        // start the capture
-            //        communicator.ReceivePackets(0, EthPacketHandler);
-            //    }
-            //    else if (Input == "U")
-            //    {
-            //        // start the capture
-            //        communicator.ReceivePackets(0, EthPacketHandler);
-            //    }
-            //}
             // Open the device
             using (PacketCommunicator communicator =
                 selectedDevice.Open(65536,                                  // portion of the packet to capture
@@ -173,28 +154,47 @@ namespace ExperimentCode
                                     10))                                  // read timeout
             {
                 Console.WriteLine("Listening on " + selectedDevice.Description + "...");
-
-                // Retrieve the packets
-                Packet packet;
-                do
+                if (Input == "E")
                 {
-                    PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
-                    switch (result)
-                    {
-                        case PacketCommunicatorReceiveResult.Timeout:
-                            // Timeout elapsed
-                            continue;
-                        case PacketCommunicatorReceiveResult.Ok:
-                            if (packet.Ethernet.Payload.Decode(System.Text.Encoding.ASCII).Contains("BL"))
-                            {
-                                Count += 1;
-                            }
-                            break;
-                        default:
-                            throw new InvalidOperationException("The result " + result + " shoudl never be reached here");
-                    }
-                } while (true);
+                    // start the capture
+                    communicator.ReceivePackets(0, EthPacketHandler);
+                }
+                else if (Input == "U")
+                {
+                    // start the capture
+                    communicator.ReceivePackets(0, EthPacketHandler);
+                }
             }
+            // Open the device
+            //    using (PacketCommunicator communicator =
+            //        selectedDevice.Open(65536,                                  // portion of the packet to capture
+            //                                                                    // 65536 guarantees that the whole packet will be captured on all the link layers
+            //                            PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
+            //                            10))                                  // read timeout
+            //    {
+            //        Console.WriteLine("Listening on " + selectedDevice.Description + "...");
+
+            //        // Retrieve the packets
+            //        Packet packet;
+            //        do
+            //        {
+            //            PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
+            //            switch (result)
+            //            {
+            //                case PacketCommunicatorReceiveResult.Timeout:
+            //                    // Timeout elapsed
+            //                    continue;
+            //                case PacketCommunicatorReceiveResult.Ok:
+            //                    if (packet.Ethernet.Payload.Decode(System.Text.Encoding.ASCII).Contains("BL"))
+            //                    {
+            //                        Count += 1;
+            //                    }
+            //                    break;
+            //                default:
+            //                    throw new InvalidOperationException("The result " + result + " shoudl never be reached here");
+            //            }
+            //        } while (true);
+            //    }
         }
 
         private static void ReFresher()
@@ -204,7 +204,6 @@ namespace ExperimentCode
                 Thread.Sleep(1000);
                 Console.WriteLine("Pkt count:" + Count.ToString());
                 Count = 0;
-
             }
         }
 
