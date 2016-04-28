@@ -16,6 +16,10 @@ namespace ExperimentCode
         static Thread ForwardingEng;
         static public void StartForwardingEngine()
         {
+            while (GlobalSettings.RXisOK != 1)
+            {
+                Thread.Sleep(1000);
+            }
             ForwardingEng = new Thread(tForwardingEng);
             ForwardingEng.Start();
         }
@@ -61,34 +65,15 @@ namespace ExperimentCode
             using (PacketCommunicator communicator =
                 selectedDevice.Open(100, // name of the device                                                         
                 PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-                1000)) // read timeout
+                -1)) // read timeout
             {
 
                 while (true)
                 {
-                    if (OutGoingPacketQueue.OutGoing.Count != 0)
+                    if (OutGoingPacketQueue.OutGoing.Count > 0)
+                    //if (InComingPacketQueue.InComing.Count > 0)
                     {
-                        InternalPacket iPkt = OutGoingPacketQueue.OutGoing.Dequeue();
-                        //switch (iPkt.Protocol)
-                        //{
-                        //    case InternalPacket.Protocols.TCP:
-                        //        {
-                        //            communicator.SendPacket(OutGoingPacketQueue.OutGoing.Dequeue());
-                        //            break;
-                        //        }
-                        //    case InternalPacket.Protocols.UDP:
-                        //        {
-                        //            EthForwarderLayer_3(iPkt);
-                        //            break;
-                        //        }
-                        //    default:
-                        //        {
-                        //            EthForwarder(iPkt);
-                        //            break;
-                        //        }
-                        //}
-                        communicator.SendPacket(iPkt.Packet);
-                        Console.WriteLine("> SENDING TO->" + iPkt.Packet.Ethernet.Destination.ToString());
+                        communicator.SendPacket(OutGoingPacketQueue.OutGoing.Dequeue().Packet);
                     }
                 }
             }

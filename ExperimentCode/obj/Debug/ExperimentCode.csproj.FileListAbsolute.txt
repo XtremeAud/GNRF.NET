@@ -58,3 +58,6 @@ C:\Users\Asa\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\Experim
 C:\Users\Asa\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\bin\Debug\PcapDotNet.Core.Extensions.xml
 C:\Users\Asa\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\bin\Debug\PcapDotNet.Packets.pdb
 C:\Users\Asa\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\bin\Debug\PcapDotNet.Packets.xml
+E:\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\bin\Debug\ExperimentCode.exe.config
+E:\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\obj\Debug\ExperimentCode.exe
+E:\Dropbox\IEEE_Wireless_Communication_15\4-Prototype-GNRF.NET\ExperimentCode\obj\Debug\ExperimentCode.pdb

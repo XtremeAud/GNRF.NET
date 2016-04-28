@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace ExperimentCode
 {
-    public static class ExperimentSetting
-    {
-        //public static int PayloadLength = 10;
-
-        public static string DstMACAdd = "00:50:56:32:1B:D0";
-        //public static string SrcMACAdd = "00:50:56:32:1B:D0";
-    }
     class Program
     {
         static void Main(string[] args)

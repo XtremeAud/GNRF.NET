@@ -68,11 +68,15 @@ namespace ExperimentCode
                     iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
                     //TODO:
                     //Get Protocols
+                    //GetProtocol(ref iPkt);
                     //Get Names
+                    //GetNames(ref iPkt);
                     //Look up Tables
                     //Intereption
                     //ReShape the format
                     //Push to Outcoming Queue
+                    OutGoingPacketQueue.OutGoing.Enqueue(iPkt);
+                    Console.WriteLine("SC_in");
                 }
             }
         }
@@ -80,20 +84,27 @@ namespace ExperimentCode
         private static void GetProtocol(ref InternalPacket iPkt)
         {
             string HexPayload = iPkt.Packet.Ethernet.Payload.ToHexadecimalString();
-            string ProtocolTag = HexPayload.Substring(18, 2);
-            if (ProtocolTag == "06")
+            if (HexPayload.Length > 20)
             {
-                iPkt.Protocol = InternalPacket.Protocols.TCP;
-            }
-            else if (ProtocolTag == "11")
-            {
-                iPkt.Protocol = InternalPacket.Protocols.UDP;
-            }
-            else if (ProtocolTag == "CX")
-            {
-                iPkt.Protocol = InternalPacket.Protocols.NDN;
-            }
+                string ProtocolTag = HexPayload.Substring(18, 2);
+                if (ProtocolTag == "06")
+                {
+                    iPkt.Protocol = InternalPacket.Protocols.TCP;
+                }
+                else if (ProtocolTag == "11")
+                {
+                    iPkt.Protocol = InternalPacket.Protocols.UDP;
+                }
+                else if (ProtocolTag == "CX")
+                {
+                    iPkt.Protocol = InternalPacket.Protocols.NDN;
+                }
 
+                else
+                {
+                    iPkt.Protocol = InternalPacket.Protocols.NA;
+                }
+            }
             else
             {
                 iPkt.Protocol = InternalPacket.Protocols.NA;

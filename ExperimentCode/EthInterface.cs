@@ -11,6 +11,7 @@ namespace ExperimentCode
     {
         public static int InterfaceID_TX = 0;
         public static int InterfaceID_RX = 0;
+        public static int RXisOK = 0;
     }
 
     //接受Ethernet报文并加入到Incoming队列中
@@ -61,13 +62,14 @@ namespace ExperimentCode
             // Take the selected adapter
             //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
             PacketDevice selectedDevice = allDevices[GlobalSettings.InterfaceID_RX - 1];
+            GlobalSettings.RXisOK = 1;
 
             // Open the device
             using (PacketCommunicator communicator =
                 selectedDevice.Open(65536,                                  // portion of the packet to capture
                                                                             // 65536 guarantees that the whole packet will be captured on all the link layers
                                     PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-                                    1000))                                  // read timeout
+                                    -1))                                  // read timeout
             {
                 Console.WriteLine(">> Listening on " + selectedDevice.Description + "...");
 
@@ -79,9 +81,9 @@ namespace ExperimentCode
         private static void PacketHandler(Packet packet)
         {
             //Console.WriteLine("From:" + packet.Ethernet.Source.ToString() + " length:" + packet.Length + " Msg: " + packet.Ethernet.Payload.Decode(System.Text.Encoding.UTF8));
-            Console.WriteLine(packet.Ethernet.Payload.ToHexadecimalString());
+            //Console.WriteLine(packet.Ethernet.Payload.ToHexadecimalString());
 
-            //InComingPacketQueue.InComing.Enqueue(packet);
+            InComingPacketQueue.InComing.Enqueue(packet);
             //Console.WriteLine(packet.Length);
         }
     }
