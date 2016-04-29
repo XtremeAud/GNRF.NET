@@ -225,14 +225,9 @@ namespace ExperimentCode
             }
         }
 
-        public static void HTTPServer()
+        public static void CCNxRequester()
         {
-            throw new NotImplementedException();
-        }
 
-        public static void CCNx()
-        {
-            throw new NotImplementedException();
         }
 
         private static Packet BuildEthernetPacket()
