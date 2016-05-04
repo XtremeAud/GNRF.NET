@@ -165,36 +165,6 @@ namespace ExperimentCode
                     communicator.ReceivePackets(0, EthPacketHandler);
                 }
             }
-            // Open the device
-            //    using (PacketCommunicator communicator =
-            //        selectedDevice.Open(65536,                                  // portion of the packet to capture
-            //                                                                    // 65536 guarantees that the whole packet will be captured on all the link layers
-            //                            PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-            //                            10))                                  // read timeout
-            //    {
-            //        Console.WriteLine("Listening on " + selectedDevice.Description + "...");
-
-            //        // Retrieve the packets
-            //        Packet packet;
-            //        do
-            //        {
-            //            PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
-            //            switch (result)
-            //            {
-            //                case PacketCommunicatorReceiveResult.Timeout:
-            //                    // Timeout elapsed
-            //                    continue;
-            //                case PacketCommunicatorReceiveResult.Ok:
-            //                    if (packet.Ethernet.Payload.Decode(System.Text.Encoding.ASCII).Contains("BL"))
-            //                    {
-            //                        Count += 1;
-            //                    }
-            //                    break;
-            //                default:
-            //                    throw new InvalidOperationException("The result " + result + " shoudl never be reached here");
-            //            }
-            //        } while (true);
-            //    }
         }
 
         private static void ReFresher()
@@ -223,11 +193,6 @@ namespace ExperimentCode
             {
                 Count += 1;
             }
-        }
-
-        public static void CCNxRequester()
-        {
-
         }
 
         private static Packet BuildEthernetPacket()
@@ -324,5 +289,64 @@ namespace ExperimentCode
             return builder.Build(DateTime.Now);
         }
 
+        public static void CCNxRequester()
+        {
+            Console.WriteLine(">> Choose the TX Interface please");
+            // Retrieve the device list from the local machine
+            IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+
+            if (allDevices.Count == 0)
+            {
+                Console.WriteLine("No interfaces found! Make sure WinPcap is installed.");
+                return;
+            }
+
+            // Print the list
+            for (int i = 0; i != allDevices.Count; ++i)
+            {
+                LivePacketDevice device = allDevices[i];
+                Console.Write((i + 1) + ". " + device.Name);
+                if (device.Description != null)
+                    Console.WriteLine(" (" + device.Description + ")");
+                else
+                    Console.WriteLine(" (No description available)");
+            }
+
+            GlobalSettings.InterfaceID_TX = 0;
+            do
+            {
+                Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "):");
+                string deviceIndexString = Console.ReadLine();
+                if (!int.TryParse(deviceIndexString, out GlobalSettings.InterfaceID_TX) ||
+                    GlobalSettings.InterfaceID_TX < 1 || GlobalSettings.InterfaceID_TX > allDevices.Count)
+                {
+                    GlobalSettings.InterfaceID_TX = 0;
+                }
+            } while (GlobalSettings.InterfaceID_TX == 0);
+
+            // Take the selected adapter
+            PacketDevice selectedDevice = allDevices[GlobalSettings.InterfaceID_TX - 1];
+
+            using (PacketCommunicator communicator =
+                selectedDevice.Open(100, // name of the device                                                         
+                PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
+                10)) // read timeout
+            {
+                Console.WriteLine("> Request A File？ Y or N");
+                string Input = Console.ReadLine();
+                if (Input == "Y")
+                {
+                    while (true)
+                    {
+                        communicator.SendPacket(BuildEthernetPacket());
+                        //Console.WriteLine("> SENDING TO->" + ExperimentSetting.DstMACAdd);
+                    }
+                }
+                else if (Input == "N")
+                {
+                    return;
+                }
+            }
+        }
     }
 }

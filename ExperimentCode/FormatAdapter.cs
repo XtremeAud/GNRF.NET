@@ -16,49 +16,58 @@ namespace ExperimentCode
         
     }
 
-    public static class HTTPGet
+    public static class NDNPackets
     {
-        public static void HTTPGetFileAndForward(string URL)
+        public static Packet EthernetNDNContentPacket(byte[] Payload, int Count, string FragmentStreamID, string Flag)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            WebResponse response = request.GetResponse();
-            Stream stream = response.GetResponseStream();
+            byte[] buffer = new byte[1024];
+            
+            //Header
+            byte[] Version = Encoding.ASCII.GetBytes("1");
+            byte[] Type = Encoding.ASCII.GetBytes("1");
+            byte[] _FragmentStreamID = new byte[4];
+            _FragmentStreamID = Encoding.ASCII.GetBytes(FragmentStreamID);
+            
+            //Put this field at [16-17] to indicate the ending signal
+            byte[] _Flag = Encoding.ASCII.GetBytes(Flag);
 
-            IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-            // Take the selected adapter
-            PacketDevice selectedDevice = allDevices[GlobalSettings.InterfaceID_RX - 1];
+            Version.CopyTo(buffer, 0);
+            Type.CopyTo(buffer, 1);
+            _FragmentStreamID.CopyTo(buffer, 12);
+            _Flag.CopyTo(buffer, 16);
+            Payload.CopyTo(buffer, 24);
 
-            using (PacketCommunicator communicator =
-                selectedDevice.Open(100, // name of the device                                                         
-                PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-                -1)) // read timeout
-            {
-                if (!response.ContentType.ToLower().StartsWith("text/"))
-                {
-                    byte[] PayloadBuffer = new byte[1024];
-                    Stream inStream = response.GetResponseStream();
-                    int Count = 1;
-                    int l;
-                    do
-                    {
-                        l = inStream.Read(PayloadBuffer, 0, PayloadBuffer.Length);
-                        if (l > 0)
-                        {
-                            communicator.SendPacket(BuildEthernetPacket(PayloadBuffer, Count));
-                        }
-                    }
-                    while (l > 0);
-                    inStream.Close();
-                }
-            }
-        }
-        private static Packet BuildEthernetPacket(byte[] Payload, int Count)
-        {
-            PayloadLayer payloadLayer;
-            payloadLayer =
+            PayloadLayer payloadLayer =
             new PayloadLayer
             {
-                Data = new Datagram(Payload),
+                Data = new Datagram(buffer),
+            };
+            EthernetLayer ethernetLayer =
+            new EthernetLayer
+            {
+                Source = new MacAddress(ExperimentSetting.SrcMACAdd),
+                Destination = new MacAddress(ExperimentSetting.DstMACAdd),
+                EtherType = EthernetType.IpV4,
+            };
+            PacketBuilder builder = new PacketBuilder(ethernetLayer, payloadLayer);
+            return builder.Build(DateTime.Now);
+        }
+
+        public static Packet EthernetInterestPacket(string ContentName)
+        {
+            byte[] buffer = new byte[1024];
+
+            //Header
+            byte[] Version = Encoding.ASCII.GetBytes("1");
+            byte[] Type = Encoding.ASCII.GetBytes("1");
+
+            Version.CopyTo(buffer, 0);
+            Type.CopyTo(buffer, 1);
+
+            PayloadLayer payloadLayer =
+            new PayloadLayer
+            {
+                Data = new Datagram(buffer),
             };
             EthernetLayer ethernetLayer =
             new EthernetLayer
