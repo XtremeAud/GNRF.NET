@@ -1,5 +1,6 @@
 ﻿using PcapDotNet.Core;
 using PcapDotNet.Packets;
+using PcapDotNet.Packets.Ethernet;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,10 +60,10 @@ namespace ExperimentCode
             {
                 Data = new Datagram(Payload),
             };
-            ethernetLayer =
+            EthernetLayer ethernetLayer =
             new EthernetLayer
             {
-                Source = new MacAddress("FF:FF:FF:AA:AA:AA"),
+                Source = new MacAddress(ExperimentSetting.SrcMACAdd),
                 Destination = new MacAddress(ExperimentSetting.DstMACAdd),
                 EtherType = EthernetType.IpV4,
             };
