@@ -1,4 +1,5 @@
 ﻿using PcapDotNet.Core;
+using PcapDotNet.Packets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,52 +30,45 @@ namespace ExperimentCode
             using (PacketCommunicator communicator =
                 selectedDevice.Open(100, // name of the device                                                         
                 PacketDeviceOpenAttributes.Promiscuous, // promiscuous mode
-                10)) // read timeout
+                -1)) // read timeout
             {
-                //输入Payload长度
-                Console.WriteLine("> Enter the length of the payload  >  10 500 1000 bytes...");
-                ExperimentSetting.PayloadLength = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("> You set the length of the payload ->" + ExperimentSetting.PayloadLength.ToString());
-
-                //选择实验模式，UDP或者Ethernet
-                Console.WriteLine("> Ethernet or UDP? Tpye in E or U ...");
-                string Input = Console.ReadLine();
-                if (Input == "E")
-                {
-                    while (true)
-                    {
-                        communicator.SendPacket(BuildEthernetPacket());
-                        //Console.WriteLine("> SENDING TO->" + ExperimentSetting.DstMACAdd);
-                    }
-                }
-                else if (Input == "U")
-                {
-                    while (true)
-                    {
-                        communicator.SendPacket(BuildUdpPacket());
-                        //Console.WriteLine("> SENDING TO->" + ExperimentSetting.DstMACAdd);
-                    }
-                }
-
                 if (!response.ContentType.ToLower().StartsWith("text/"))
-            {
-                //Value = SaveBinaryFile(response, FileName); 
-                byte[] buffer = new byte[1024];
-                //Stream outStream = System.IO.File.Create(FileName);
-                Stream inStream = response.GetResponseStream();
-
-                int l;
-                do
                 {
-                    l = inStream.Read(buffer, 0, buffer.Length);
-                    if (l > 0)
-                        outStream.Write(buffer, 0, l);
+                    byte[] PayloadBuffer = new byte[1024];
+                    Stream inStream = response.GetResponseStream();
+                    int Count = 1;
+                    int l;
+                    do
+                    {
+                        l = inStream.Read(PayloadBuffer, 0, PayloadBuffer.Length);
+                        if (l > 0)
+                        {
+                            communicator.SendPacket(BuildEthernetPacket(PayloadBuffer, Count));
+                             
+                        }
+                    }
+                    while (l > 0);
+                    inStream.Close();
                 }
-                while (l > 0);
-
-                outStream.Close();
-                inStream.Close();
             }
-        } 
+        }
+        private static Packet BuildEthernetPacket(byte[] Payload, int Count)
+        {
+            PayloadLayer payloadLayer;
+            payloadLayer =
+            new PayloadLayer
+            {
+                Data = new Datagram(buffer),
+            };
+            ethernetLayer =
+            new EthernetLayer
+            {
+                Source = new MacAddress("FF:FF:FF:AA:AA:AA"),
+                Destination = new MacAddress(ExperimentSetting.DstMACAdd),
+                EtherType = EthernetType.IpV4,
+            };
+            PacketBuilder builder = new PacketBuilder(ethernetLayer, payloadLayer);
+            return builder.Build(DateTime.Now);
+        }
     }
 }
