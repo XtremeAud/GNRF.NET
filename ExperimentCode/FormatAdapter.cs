@@ -44,7 +44,6 @@ namespace ExperimentCode
                         if (l > 0)
                         {
                             communicator.SendPacket(BuildEthernetPacket(PayloadBuffer, Count));
-                             
                         }
                     }
                     while (l > 0);
@@ -58,7 +57,7 @@ namespace ExperimentCode
             payloadLayer =
             new PayloadLayer
             {
-                Data = new Datagram(buffer),
+                Data = new Datagram(Payload),
             };
             ethernetLayer =
             new EthernetLayer
