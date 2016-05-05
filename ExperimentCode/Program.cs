@@ -11,7 +11,7 @@ namespace ExperimentCode
         static void Main(string[] args)
         {
             
-            Console.WriteLine(">> Experiment Mode:\nS: BlueTooth/Zigbee Sender Simulator R: EthReceiver C: CCNx Simulator N: Switch");
+            Console.WriteLine(">> Experiment Mode:\nS: BlueTooth/Zigbee Sender Simulator R: EthReceiver C: CCNx Simulator N: Switch D: Downloading Test");
             string Input = Console.ReadLine();
             if (Input == "S")
             {
@@ -24,7 +24,10 @@ namespace ExperimentCode
             else if (Input == "C")
             {
                 ExperimentClient.CCNxRequester();
-
+            }
+            else if (Input == "D")
+            {
+                ExperimentClient.HTTPDownloadTest();
             }
             else
             {

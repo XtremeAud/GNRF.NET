@@ -6,7 +6,9 @@ using PcapDotNet.Packets.Transport;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -289,6 +291,42 @@ namespace ExperimentCode
             return builder.Build(DateTime.Now);
         }
 
+        public static void HTTPDownloadTest()
+        {
+            Console.WriteLine(">> Downloading Testing");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:80/home/1.zip");
+            WebResponse response = request.GetResponse();
+            Stream stream = response.GetResponseStream();
+
+                if (!response.ContentType.ToLower().StartsWith("text/"))
+                {
+                    byte[] PayloadBuffer = new byte[5000000];
+                    DateTime st = DateTime.Now;
+                    Stream inStream = response.GetResponseStream();
+                    int Count = 1;
+                    int l;
+                    do
+                    {
+                        l = inStream.Read(PayloadBuffer, 0, PayloadBuffer.Length);
+                        if (l > 0)
+                        {
+
+                            //communicator.SendPacket(NDNPackets.EthernetNDNContentPacket(PayloadBuffer, Count, "1234", "11"));
+                            Console.WriteLine("Save Pakcets: " + Count);
+                        }
+                        Count += 1;
+                    }
+                    while (l > 0);
+                    //communicator.SendPacket(NDNPackets.EthernetNDNContentPacket(new byte[1], Count, "1234", "88"));
+                    Console.WriteLine("> Sent Pakcets: " + Count);
+                    inStream.Close();
+                    DateTime en = DateTime.Now;
+                    TimeSpan ts = en - st;
+                    Console.WriteLine(">>>>>>>>>>>>>>> Time: " + ts.TotalSeconds);
+                Console.ReadKey();
+                }
+        }
+
         public static void CCNxRequester()
         {
             Console.WriteLine(">> Choose the TX Interface please");
@@ -336,11 +374,11 @@ namespace ExperimentCode
                 string Input = Console.ReadLine();
                 if (Input == "Y")
                 {
-                    while (true)
-                    {
+                    //while (true)
+                    //{
                         communicator.SendPacket(BuildEthernetPacket());
                         //Console.WriteLine("> SENDING TO->" + ExperimentSetting.DstMACAdd);
-                    }
+                    //}
                 }
                 else if (Input == "N")
                 {

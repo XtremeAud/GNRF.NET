@@ -63,41 +63,61 @@ namespace ExperimentCode
             {
                 if (InComingPacketQueue.InComing.Count > 0)
                 {
-
-                    InternalPacket iPkt = new InternalPacket();
-                    iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
+                    lock (InComingPacketQueue.InComing)
+                    {
+                        InternalPacket iPkt = new InternalPacket();
+                    
+                        iPkt.Packet = InComingPacketQueue.InComing.Dequeue();
+                    
                     //TODO:
                     //Get Protocols
-                    //GetProtocol(ref iPkt);
-                    //Get Names
-                    //GetNames(ref iPkt);
-                    //Look up Tables
-                    //Intereption
-                    //ReShape the format
-                    //Push to Outcoming Queue
-                    OutGoingPacketQueue.OutGoing.Enqueue(iPkt);
-                    Console.WriteLine("SC_in");
+                    GetProtocol(ref iPkt);
+                        //Get Names
+                        //GetNames(ref iPkt);
+                        //Look up Tables
+                        //Intereption
+                        if (iPkt.Protocol == InternalPacket.Protocols.NDN)
+                        {
+                            Interpreter.ProcessNDNInterestPkt("http://127.0.0.1:80/home/1.mkv");
+                        }
+                        //ReShape the format
+                        //Push to Outcoming Queue
+                        OutGoingPacketQueue.OutGoing.Enqueue(iPkt);
+                    }
                 }
             }
         }
 
         private static void GetProtocol(ref InternalPacket iPkt)
         {
-            string HexPayload = iPkt.Packet.Ethernet.Payload.ToHexadecimalString();
-            if (HexPayload.Length > 20)
+            string HexPayload;
+            //Console.WriteLine(iPkt.Packet.Ethernet.Payload.ToHexadecimalString());
+            if (iPkt.Packet.Ethernet.Payload != null)
+            {
+                HexPayload = iPkt.Packet.Ethernet.Payload.ToHexadecimalString();
+            }
+            else
+            {
+                HexPayload = "";
+            }
+            if (HexPayload.Length > 19)
             {
                 string ProtocolTag = HexPayload.Substring(18, 2);
                 if (ProtocolTag == "06")
                 {
+                    Console.WriteLine("> TCP in");
                     iPkt.Protocol = InternalPacket.Protocols.TCP;
                 }
                 else if (ProtocolTag == "11")
                 {
+                    Console.WriteLine("> UDP in");
                     iPkt.Protocol = InternalPacket.Protocols.UDP;
                 }
-                else if (ProtocolTag == "CX")
+                else if (ProtocolTag == "54")
                 {
+                    Console.WriteLine("> NDN Interest Packet in");
                     iPkt.Protocol = InternalPacket.Protocols.NDN;
+
                 }
 
                 else

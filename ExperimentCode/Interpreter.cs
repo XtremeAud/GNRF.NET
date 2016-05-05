@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 
 namespace ExperimentCode
 {
-    class Interpreter
+    public class Interpreter
     {
-
+        public static void ProcessNDNInterestPkt(string URL)
+        {
+            HTTPGet.HTTPGetFileAndForward(URL);
+        }
     }
 
     public static class HTTPGet
@@ -34,7 +37,7 @@ namespace ExperimentCode
                 if (!response.ContentType.ToLower().StartsWith("text/"))
                 {
                     byte[] PayloadBuffer = new byte[1000];
-
+                    DateTime st = DateTime.Now; 
                     Stream inStream = response.GetResponseStream();
                     int Count = 1;
                     int l;
@@ -43,13 +46,19 @@ namespace ExperimentCode
                         l = inStream.Read(PayloadBuffer, 0, PayloadBuffer.Length);
                         if (l > 0)
                         {
+
                             communicator.SendPacket(NDNPackets.EthernetNDNContentPacket(PayloadBuffer, Count, "1234", "11"));
+                            Console.WriteLine("Sent Pakcets: "+ Count);
                         }
                         Count += 1;
                     }
                     while (l > 0);
                     communicator.SendPacket(NDNPackets.EthernetNDNContentPacket(new byte[1], Count, "1234", "88"));
+                    Console.WriteLine("> Sent Pakcets: " + Count);
                     inStream.Close();
+                    DateTime en = DateTime.Now;
+                    TimeSpan ts = en - st;
+                    Console.WriteLine(">>>>>>>>>>>>>>> Time: " + ts.TotalSeconds);
                 }
             }
         }
